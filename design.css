@@ -14,7 +14,13 @@ body{
     height: 20%;
 }
 .demoImg{
-    /* height: 50%; */
+    height: 1000px; 
     margin-top: 3%;
     /* margin-left: 10%; */
+    background: white;
+    color:black;
+    width: 562.5px;
+}
+.marker{
+    height: 2px;
 }

@@ -1,13 +1,13 @@
 document.onkeydown = checkKey;
 
-var deltaPos = 10;
-var deltaSize = 10;
+var deltaPos = 0.4;
+var deltaSize = 2;
 
-var pos = [10,20,30,40]
-var size = [50,60]
+var pos = [45,33.5,17.6,0.3]
+var size = [85,90]
 
 document.getElementById("demoImg").style.marginLeft = pos[0] + "%";
-document.getElementById("demoImg").style.height = size[0]+ "%";
+// document.getElementById("demoImg").style.height = size[0]+ "%";
 
 function checkKey(e) {
 
@@ -32,6 +32,7 @@ function checkKey(e) {
     }
     document.getElementById("demoImg").style.marginLeft = currPos + "%";
     document.getElementById("demoImg").style.height = currSize + "%";
+    console.log(currPos);
 }
 
 function setPos(num) {
