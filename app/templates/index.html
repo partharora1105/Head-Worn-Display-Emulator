@@ -29,7 +29,7 @@
           </div>
         </div>
         <div class="col-md-1">
-          <div class="row"><h3>{{data}}</h3></div>
+          <div class="row"><h3></h3></div>
           <div class="row"><button onclick="setPos(1)" type="button" class="btn btn-outline-light">Pos1</button></div>
           <div class="row"><button onclick="setPos(2)" type="button" class="btn btn-outline-light">Pos2</button></div>
           <div class="row"><button onclick="setPos(3)" type="button" class="btn btn-outline-light">Pos3</button></div>
@@ -55,7 +55,33 @@
 
     <!-- Optional JavaScript; choose one of the two! -->
       <script>
-            document.onkeydown = checkKey;
+            var threshold = 407190;
+            var isHidden = false;
+document.onkeydown = KeyCheck;
+function KeyCheck()
+{
+    var KeyID = event.keyCode;
+    switch(KeyID)
+    {
+      case 32:
+      document.getElementById("demoImg").style.visibility = "hidden";
+      isHidden = !isHidden;
+      break;
+     }
+}
+<!--            document.addEventListener('keydown', event => {-->
+<!--              if (event.code === 'Space') {-->
+<!--                document.getElementById("demoImg").style.visibility = "hidden"-->
+<!--              }-->
+<!--            })-->
+<!--            document.body.onkeyup = function(e) {-->
+<!--                    if (e.key == " " ||-->
+<!--                        e.code == "Space" ||-->
+<!--                        e.keyCode == 32) {-->
+<!--                      document.getElementById("demoImg").style.visibility = "hidden";-->
+<!--                    }-->
+<!--                  }-->
+<!--            document.onkeydown = checkKey;-->
 
             var deltaPos = 0.4;
             var deltaSize = 2;
@@ -64,21 +90,26 @@
             var size = [85,90]
 
 
-            var serialPort = new SerialPort("COM3", {
-                baudRate: 9600
-              }); // Change the port name to match your computer's configuration
-
-              serialPort.on("open", function () {
-                console.log("Serial port is open.");
-              });
-
-              serialPort.on("data", function (data) {
-                console.log("Received data:", data);
-              });
 
 
             document.getElementById("demoImg").style.marginLeft = pos[0] + "%";
             // document.getElementById("demoImg").style.height = size[0]+ "%";
+
+                const intervalID = setInterval(myCallback, 500, "Parameter 1", "Parameter 2");
+                function myCallback() {
+                  console.log({{data}});
+                  if ({{data}} > threshold) {
+                     document.getElementById("demoImg").style.visibility = "hidden";
+                  } else {
+                    if (!isHidden) {
+                      document.getElementById("demoImg").style.visibility = "visible" ;
+                      }
+                  }
+
+
+            }
+
+
 
             function checkKey(e) {
 
