@@ -8,8 +8,12 @@ import serial
 import sqlite3
 from flask import g
 import time
+try:
+    ser = serial.Serial('/dev/cu.usbmodem1301', 9600) # replace with your serial port and baud rate
+except:
+    print("No Port Found")
+    ser = None
 
-ser = serial.Serial('/dev/cu.usbmodem1301', 9600) # replace with your serial port and baud rate
 
 app = Flask(__name__, static_folder="static")
 localDomain = "http://localhost:5000"
@@ -36,14 +40,19 @@ PATH = localPath
 
 @app.route("/")
 def openHome():
-    val = int(ser.readline().decode().strip())
-    resitor = 680
-    voltage = 5
-    prVal = ((resitor * val)/voltage-val)
-    #prVal = str(round(prVal/10000, 2))
-    print(prVal)
-    #return str(prVal)
-    return render_template("index.html", domain=DOMAIN, data = str(prVal))
+    txt = ""
+    with open('book.txt') as f:
+        txt = f.read()
+    if ser != None:
+        val = int(ser.readline().decode().strip())
+        resitor = 680
+        voltage = 5
+        prVal = ((resitor * val) / voltage - val)
+        print(prVal)
+        # return str(prVal)
+        return render_template("index.html", domain=DOMAIN, data=str(prVal), txt = txt)
+    else:
+        return render_template("index.html", domain=DOMAIN, data=str(0), txt = txt)
 
 @app.route("/source")
 def openSource():

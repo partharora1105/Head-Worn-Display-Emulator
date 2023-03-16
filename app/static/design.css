@@ -1,5 +1,7 @@
 body{
     height: 100vh;
+    overflow : hidden;
+    background-color: black;
 }
 
 .bg{
@@ -14,13 +16,21 @@ body{
     height: 20%;
 }
 .demoImg{
-    height: 1000px;
+    font-size : 20px;
+    padding: 40px;
     margin-top: 3%;
-    /* margin-left: 10%; */
+    text-align: justify;
+
     background: white;
     color:black;
-    width: 562.5px;
+
+    overflow: scroll;
 }
+
+
 .marker{
     height: 2px;
+}
+.modified-iframe {
+    font-size: 90px!important;
 }

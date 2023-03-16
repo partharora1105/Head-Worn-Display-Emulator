@@ -25,63 +25,62 @@
       <div class="row canvas-holder">
         <div class="col-md-11">
           <div class="demoImg row" id="demoImg">
-            <iframe src="https://www.gutenberg.org/cache/epub/1661/pg1661-images.html#chap01"></iframe>
+            <p>{{txt}}</p>
+<!--            <iframe class="modified-iframe" src="https://www.gutenberg.org/cache/epub/1661/pg1661-images.html#chap01" style="font-size : 20px!important, padding : 200px;"></iframe>-->
           </div>
         </div>
-        <div class="col-md-1">
-          <div class="row"><h3></h3></div>
-          <div class="row"><button onclick="setPos(1)" type="button" class="btn btn-outline-light">Pos1</button></div>
-          <div class="row"><button onclick="setPos(2)" type="button" class="btn btn-outline-light">Pos2</button></div>
-          <div class="row"><button onclick="setPos(3)" type="button" class="btn btn-outline-light">Pos3</button></div>
-          <div class="row"><button onclick="setPos(4)" type="button" class="btn btn-outline-light">Pos4</button></div>
-          <div class="row"><button onclick="setSize(1)" type="button" class="btn btn-outline-light">Size1</button></div>
-          <div class="row"><button onclick="setSize(2)" type="button" class="btn btn-outline-light">Size2</button></div>
-        </div>
+<!--        <div class="col-md-1">-->
+<!--          <div class="row"><h3></h3></div>-->
+<!--          <div class="row"><button onclick="setPos(1)" type="button" class="btn btn-outline-light">Pos1</button></div>-->
+<!--          <div class="row"><button onclick="setPos(2)" type="button" class="btn btn-outline-light">Pos2</button></div>-->
+<!--          <div class="row"><button onclick="setPos(3)" type="button" class="btn btn-outline-light">Pos3</button></div>-->
+<!--          <div class="row"><button onclick="setPos(4)" type="button" class="btn btn-outline-light">Pos4</button></div>-->
+<!--          <div class="row"><button onclick="setSize(1)" type="button" class="btn btn-outline-light">Size1</button></div>-->
+<!--          <div class="row"><button onclick="setSize(2)" type="button" class="btn btn-outline-light">Size2</button></div>-->
+<!--        </div>-->
       </div>
-      <div class="footer">
-        <div class="row"><h3>Get</h3></div>
-        <div class="row">
-          <div class="col-md-2"><button onclick="getPos(1)" type="button" class="btn btn-outline-light">Pos1</button></div>
-          <div class="col-md-2"><button onclick="getPos(2)" type="button" class="btn btn-outline-light">Pos2</button></div>
-          <div class="col-md-2"><button onclick="getPos(3)" type="button" class="btn btn-outline-light">Pos3</button></div>
-          <div class="col-md-2"><button onclick="getPos(4)" type="button" class="btn btn-outline-light">Pos4</button></div>
-          <div class="col-md-2"><button onclick="getSize(1)" type="button" class="btn btn-outline-light">Size1</button></div>
-          <div class="col-md-2"><button onclick="getSize(2)" type="button" class="btn btn-outline-light">Size2</button></div>
-        </div>
+<!--      <div class="footer">-->
+<!--        <div class="row"><h3>Get</h3></div>-->
+<!--        <div class="row">-->
+<!--          <div class="col-md-2"><button onclick="getPos(1)" type="button" class="btn btn-outline-light">Pos1</button></div>-->
+<!--          <div class="col-md-2"><button onclick="getPos(2)" type="button" class="btn btn-outline-light">Pos2</button></div>-->
+<!--          <div class="col-md-2"><button onclick="getPos(3)" type="button" class="btn btn-outline-light">Pos3</button></div>-->
+<!--          <div class="col-md-2"><button onclick="getPos(4)" type="button" class="btn btn-outline-light">Pos4</button></div>-->
+<!--          <div class="col-md-2"><button onclick="getSize(1)" type="button" class="btn btn-outline-light">Size1</button></div>-->
+<!--          <div class="col-md-2"><button onclick="getSize(2)" type="button" class="btn btn-outline-light">Size2</button></div>-->
+<!--        </div>-->
 
-      </div>
+<!--      </div>-->
     </div>
       
 
     <!-- Optional JavaScript; choose one of the two! -->
       <script>
-            var threshold = 407190;
+            var threshold = 139835;
             var isHidden = false;
 document.onkeydown = KeyCheck;
+spaceClick = 0
+leftClick = 0
 function KeyCheck()
 {
     var KeyID = event.keyCode;
     switch(KeyID)
     {
       case 32:
+      spaceClick++;
+      console.log("Space Click : " + spaceClick)
       document.getElementById("demoImg").style.visibility = "hidden";
       isHidden = !isHidden;
       break;
+
+
+      case 37:
+      leftClick++;
+      console.log("Left Click : " + leftClick)
+      break;
      }
 }
-<!--            document.addEventListener('keydown', event => {-->
-<!--              if (event.code === 'Space') {-->
-<!--                document.getElementById("demoImg").style.visibility = "hidden"-->
-<!--              }-->
-<!--            })-->
-<!--            document.body.onkeyup = function(e) {-->
-<!--                    if (e.key == " " ||-->
-<!--                        e.code == "Space" ||-->
-<!--                        e.keyCode == 32) {-->
-<!--                      document.getElementById("demoImg").style.visibility = "hidden";-->
-<!--                    }-->
-<!--                  }-->
-<!--            document.onkeydown = checkKey;-->
+
 
             var deltaPos = 0.4;
             var deltaSize = 2;
@@ -91,13 +90,17 @@ function KeyCheck()
 
 
 
-
-            document.getElementById("demoImg").style.marginLeft = pos[0] + "%";
+            let h  = 2173.2283465; //57.5cm
+            let w = 1209.4488189; //32cm
+            document.getElementById("demoImg").style.height = (h).toString() + "px" ;
+            document.getElementById("demoImg").style.width = (w).toString() + "px" ;
+            document.getElementById("demoImg").style.marginLeft = ((screen.width-w)/2).toString() + "px" ;
+            document.getElementById("demoImg").style.marginTop =  ((screen.height-h)/2).toString() + "px" ;
             // document.getElementById("demoImg").style.height = size[0]+ "%";
 
                 const intervalID = setInterval(myCallback, 500, "Parameter 1", "Parameter 2");
                 function myCallback() {
-                  console.log({{data}});
+<!--                  console.log({{data}});-->
                   if ({{data}} > threshold) {
                      document.getElementById("demoImg").style.visibility = "hidden";
                   } else {
