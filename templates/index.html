@@ -19,7 +19,7 @@
     <title>Experiment</title>
     
   </head>
-  <body onmousedown="mouseButton(event)" id="main">
+  <body onmousedown="mouseButton(event)" id="main"  oncontextmenu="return false;">
       <div class="container-fluid bg">
       <div class="row canvas-holder">
         <div class="col-md-11 position-relative">
@@ -29,8 +29,10 @@
                 <p id="page{{i}}">{{txt[i]}}</p>
             {%endfor%}
           </div>
+          <div class="position-absolute foundCount" id="counter">
+            Found = 0
+          </div>
           <div class="counter position-absolute">
-            <div class="row" id="counter">Found = 0</div>
             <div class="row" id="page">Page = 1</div>
             <div class="row" id="page"><button onclick="changePage(0)">Chapter 1</button></div>
             <div class="row" id="page"><button onclick="changePage(113)">Chapter 2</button></div>
