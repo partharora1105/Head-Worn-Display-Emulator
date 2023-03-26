@@ -16,18 +16,24 @@ body{
     height: 20%;
 }
 .demoImg{
-    font-size : 20px;
+    /* font-size : 34.69708 */
+    /*  */
+    /* (905.512  / 521.95275591) * 20 */
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    line-height: 113%;
     padding: 40px;
-    margin-top: 3%;
-    text-align: justify;
-
+    margin-top: 0%;
+    white-space: pre-wrap;
     background: white;
     color:black;
 
-    overflow: scroll;
+    /* overflow: scroll; */
 }
 
-
+.counter{
+    color: white;
+    font-size: 30px;
+}
 .marker{
     height: 2px;
 }
