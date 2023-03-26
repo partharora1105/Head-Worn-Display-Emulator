@@ -35,10 +35,10 @@
           <div class="counter position-absolute">
             <div class="row" id="page">Page = 1</div>
             <div class="row" id="page"><button onclick="changePage(0)">Chapter 1</button></div>
-            <div class="row" id="page"><button onclick="changePage(113)">Chapter 2</button></div>
-            <div class="row" id="page"><button onclick="changePage(232)">Chapter 3</button></div>
-            <div class="row" id="page"><button onclick="changePage(324)">Chapter 4</button></div>
-            <div class="row" id="page"><button onclick="changePage(449)">Chapter 5</button></div>
+            <div class="row" id="page"><button onclick="changePage(116)">Chapter 2</button></div>
+            <div class="row" id="page"><button onclick="changePage(239)">Chapter 3</button></div>
+            <div class="row" id="page"><button onclick="changePage(334)">Chapter 4</button></div>
+            <div class="row" id="page"><button onclick="changePage(462)">Chapter 5</button></div>
           </div>
         </div>
         
@@ -229,7 +229,7 @@
           let sum = 0;
           let len = 0;
           for (let i = 0; i < numbers.length; i++) {
-            if (typeof numbers[i] !== 'undefined') {
+            if (typeof numbers[i] !== 'undefined' && numbers[i] > 1000) {
               sum += numbers[i];
               len++;
             }
