@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo+Narrow&family=Arimo&display=swap" rel="stylesheet">
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <meta name="description" content="A Student-Led organization for Georgia Tech Community interested in Virtual/Augmented/Mixed Reality"/>
     <title>Experiment</title>
     
@@ -48,12 +48,29 @@
 
     <!-- Optional JavaScript; choose one of the two! -->
       <script>
+        var threshold = 800;
+        setInterval(function() {
+            $.ajax({
+                url: "/data",
+                success: function(data) {
+                    console.log(data);
+                    if (parseInt(data) > threshold) {
+                      console.log("hide");
+                        document.getElementById("demoImg").style.visibility = "hidden";
+                    } else {
+                        document.getElementById("demoImg").style.visibility = "visible";
+                    }
+                }
+            });
+        }, 200);
+
+
         let h  = 905.512 //2173.2283465; //57.5cm 22.6378inch
         let w = 503.936 //1209.4488189; //32cm 12.5984inch
         //TV => 1 inch = 40px
         let iphone6H = 521.95275591
         let fSize = 20
-        var threshold = 139835;
+        
         var isHidden = false;
         currPage = 0;
         times = [];
@@ -63,7 +80,7 @@
         let laserTime = 0;
         document.onkeydown = KeyCheck;
         leftClick = 0
-        const intervalID = setInterval(checkArduino, 500, "Parameter 1", "Parameter 2");
+        // const intervalID = setInterval(checkArduino, 500, "Parameter 1", "Parameter 2");
         setDimesnions();
         setPages()
         
@@ -179,15 +196,7 @@
           document.getElementById("counter").innerHTML = "Found = " + leftClick;
         }
         
-        function checkArduino() {
-          if ({{data}} > threshold) {
-              document.getElementById("demoImg").style.visibility = "hidden";
-            } else {
-              if (!isHidden) {
-                document.getElementById("demoImg").style.visibility = "visible" ;
-                }
-            }
-          }
+
 
         function next() {
           if (currPage < {{len}}){

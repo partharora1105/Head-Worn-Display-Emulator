@@ -1,12 +1,9 @@
 import textwrap
-from flask import Flask, redirect, url_for, request, render_template, send_from_directory
+from flask import Flask, jsonify, redirect, url_for, request, render_template, send_from_directory
 import serial
+import time
 
-try:
-    ser = serial.Serial('/dev/cu.usbmodem1301', 9600) # replace with your serial port and baud rate
-except:
-    print("No Port Found")
-    ser = None
+
 
 
 app = Flask(__name__, static_folder="static")
@@ -17,6 +14,13 @@ localPath = ""
 publicPath = ""
 PATH = localPath
 
+
+try:
+    ser = serial.Serial('/dev/cu.usbmodem1301', 9600)  # Change this to the port your device is connected to
+    ser.timeout = 0.1  # Set the timeout to 100ms
+except:
+    print("No Port Found")
+    ser = None
 
 @app.route("/")
 def openHome():
@@ -45,8 +49,10 @@ def openHome():
     arr = []
     for chapter in chapters:
         arr += textwrap.wrap(chapter, width=462)
+        print(str(len(textwrap.wrap(chapter, width=462))))
 
-
+    return render_template("index.html", domain=DOMAIN, data=str(0), txt=arr, len=len(arr), sen=sentences,
+                           senCount=sentencesCount)
     chapters = []
 
     # arr = []
@@ -80,26 +86,23 @@ def openHome():
     #     if i % 462 == 0:
     #         arr.append(output[i:i + 462])
 
-    if ser != None:
-        val = int(ser.readline().decode().strip())
-        resitor = 680
-        voltage = 5
-        prVal = ((resitor * val) / voltage - val)
-        print(prVal)
-        return render_template("index.html", domain=DOMAIN, data=str(prVal), txt=arr, len = len(arr), sen = sentences, senCount = sentencesCount)
-    else:
-        return render_template("index.html", domain=DOMAIN, data=str(0), txt=arr, len = len(arr), sen = sentences, senCount = sentencesCount)
+    # if ser != None:
+    #     val = int(ser.readline().decode().strip())
+    #     resitor = 680
+    #     voltage = 5
+    #     prVal = ((resitor * val) / voltage - val)
+    #     prVal = val
+    #     return render_template("index.html", domain=DOMAIN, data=str(prVal), txt=arr, len = len(arr), sen = sentences, senCount = sentencesCount)
+    # else:
+    #     return render_template("index.html", domain=DOMAIN, data=str(0), txt=arr, len = len(arr), sen = sentences, senCount = sentencesCount)
 #
-# @app.route("/source")
-# def openSource():
-#     val = int(ser.readline().decode().strip())
-#     resitor = 680
-#     voltage = 5
-#     prVal = ((resitor * val) / voltage - val)
-#     # prVal = str(round(prVal/10000, 2))
-#     print(prVal)
-#     # return str(prVal)
-#     # return render_template("index.html", domain=DOMAIN, data=str(prVal), txt = "")
+@app.route("/data")
+def openSource():
+    data = ''
+    if ser.in_waiting > 0:
+        data = ser.readline().decode('utf-8').strip()
+    time.sleep(0.4)  # Wait for 400ms before reading again
+    return jsonify(data)
 
 if __name__ == "__main__":
     app.debug = True
