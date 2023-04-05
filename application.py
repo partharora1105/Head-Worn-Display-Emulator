@@ -12,7 +12,6 @@ DOMAIN = localDomain
 localPath = ""
 publicPath = ""
 PATH = localPath
-dataTemp = 100
 
 # try:
 #     ser = serial.Serial('/dev/cu.usbmodem1301', 9600)  # Change this to the port your device is connected to
@@ -21,17 +20,16 @@ dataTemp = 100
 #     ser = None
 #     print("screwing up")
 
-try:
-    ser = serial.Serial('/dev/cu.usbmodem1301', 9600)
-    data = ser.readline().strip()
-    dataTemp = data
-    # process the data
+initialized = False
+while not initialized:
+    try:
+        ser = serial.Serial('/dev/cu.usbmodem1301', 9600)
+        initialized = True
+        # process the data
 
-except serial.serialutil.SerialException:
-    print("SerialException occurred, resetting connection...")
-    ser.close()
-    ser = serial.Serial('/dev/cu.usbmodem1301', 9600)
-    print(dataTemp)
+    except serial.serialutil.SerialException:
+        print("SerialException occurred, resetting connection...")
+        ser = serial.Serial('/dev/cu.usbmodem1301', 9600)
 
 
 
@@ -116,21 +114,41 @@ def openHome():
     # else:
     #     return render_template("index.html", domain=DOMAIN, data=str(0), txt=arr, len = len(arr), sen = sentences, senCount = sentencesCount)
 #
+
+dataCached = 0
 @app.route("/data")
 def openSource():
-    data = 0
-    if (ser == None):
-        return jsonify(0)
-    else:
-        try:
-            data = ser.readline().decode('utf-8').strip()
-        except:
-            data = 0
-        # if ser.in_waiting > 0:
-        #     data = ser.readline().decode('utf-8').strip()
-        #     print(data)
-        time.sleep(0.1)  # Wait for 400ms before reading again
+    global dataCached
+    global ser
+    try:
+        data = ser.readline().decode().strip()
+        if (not data.isdigit()) or int(data) > 999 or int(data) < 100:
+            reinitialize()
+            return jsonify(dataCached)
+        dataCached = data
         return jsonify(data)
+    except (SerialException, UnicodeDecodeError) as e:
+        reinitialize()
+        return jsonify(dataCached)
+
+
+
+def reinitialize():
+    print("Some Error!")
+    global ser
+    reinitialized = False
+    while not reinitialized:
+        try:
+            newser = serial.Serial('/dev/cu.usbmodem1301', 9600)
+            ser = newser
+            reinitialized = True
+            # process the data
+        except serial.serialutil.SerialException:
+            print("SerialException occurred, resetting connection...")
+    # if ser.in_waiting > 0:
+    #     data = ser.readline().decode('utf-8').strip()
+    #     print(data)
+
 
 if __name__ == "__main__":
     app.debug = True

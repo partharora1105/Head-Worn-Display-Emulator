@@ -80,7 +80,7 @@
                     console.log(data); 
                     if (parseInt(data) > threshold) {
                       if (overrideStatus !== 0b01 && !isHidden) {
-                        console.log("hide");
+                        console.log("--hide--");
                         isHidden = true;
                         document.getElementById("demoImg").style.visibility = "hidden";
                         laserStartTime = Date.now();
@@ -88,7 +88,7 @@
                     } else {
                       if (overrideStatus !== 0b11 && isHidden) {
                         isHidden = false;
-                        console.log("show");
+                        console.log("--show--");
                         document.getElementById("demoImg").style.visibility = "visible";
                         laserTime += Date.now() - laserStartTime;
                       }
