@@ -50,6 +50,7 @@
       <script>
         
         let threshold = 800;
+        spaceBardHold = false;
         let h  = 905.512 //2173.2283465; //57.5cm 22.6378inch
         let w = 503.936 //1209.4488189; //32cm 12.5984inch
         //TV => 1 inch = 40px
@@ -62,27 +63,35 @@
         let laserStartTime = Date.now();
         let totalStartTime = Date.now();
         let laserTime = 0;
-        document.onkeydown = KeyCheck;
+        document.onkeydown = onKeyDown;
+        document.onkeyup = onKeyUp;
+        setInterval(visibilityCheck, 50);
         leftClick = 0
         // const intervalID = setInterval(checkArduino, 500, "Parameter 1", "Parameter 2");
         setDimesnions();
         setPages()
-
-
+        let overrideStatus = 0b00;
+        let isHidden = false;
 
         setInterval(function() {
             $.ajax({
                 url: "/data",
                 success: function(data) {
-                    console.log(data);
-                    if (parseInt(data) > threshold ) {
-                      console.log("hide");
-                      document.getElementById("demoImg").style.visibility = "hidden";
-                        // isHidden == true;
+                    console.log(data); 
+                    if (parseInt(data) > threshold) {
+                      if (overrideStatus !== 0b01 && !isHidden) {
+                        console.log("hide");
+                        isHidden = true;
+                        document.getElementById("demoImg").style.visibility = "hidden";
+                        laserStartTime = Date.now();
+                      }
                     } else {
+                      if (overrideStatus !== 0b11 && isHidden) {
+                        isHidden = false;
                         console.log("show");
                         document.getElementById("demoImg").style.visibility = "visible";
-                        // isHidden = false;
+                        laserTime += Date.now() - laserStartTime;
+                      }
                     }
                 }
             });
@@ -105,21 +114,29 @@
         }
           
 
-        function KeyCheck()
+        function visibilityCheck() {
+          if (overrideStatus === 0b11 && !isHidden) {
+            isHidden = true;
+            document.getElementById("demoImg").style.visibility = "hidden";
+            laserStartTime = Date.now();
+          } else if (overrideStatus === 0b01 && isHidden) {
+            isHidden = false;
+            document.getElementById("demoImg").style.visibility = "visible";
+            laserTime += Date.now() - laserStartTime;
+          }
+        }
+
+        function onKeyDown(event)
           {
               var KeyID = event.keyCode;
               switch(KeyID)
               {
-                case 32: //SpaceBar
-                document.getElementById("demoImg").style.visibility = "hidden";
-                isHidden = !isHidden;
-                if (isHidden){
-                  laserStartTime = Date.now();
-                } else {
-                  laserTime += Date.now() - laserStartTime;
-                  // console.log("Total Laser Time = " + laserTime)
-                }
-                break;
+                case 13: // enter
+                overrideStatus = overrideStatus | 0b10
+                  break;
+                case 32: // SpaceBar
+                overrideStatus = overrideStatus | 0b01
+                  break;
                 case 37: //Left
                 foundWord();
                 break;
@@ -137,7 +154,17 @@
                 break;
               }
           }
-
+        
+        function onKeyUp(event) {
+          switch(event.keyCode) {
+            case 13: // enter
+            overrideStatus = overrideStatus & 0b01
+              break;
+            case 32: // space
+            overrideStatus = overrideStatus & 0b10
+              break;
+          }
+        }
         function mouseButton(event) {
           var KeyID = event.button;
           switch(KeyID)

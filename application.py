@@ -28,11 +28,11 @@ try:
     # process the data
 
 except serial.serialutil.SerialException:
-    ser = None
     print("SerialException occurred, resetting connection...")
     ser.close()
     ser = serial.Serial('/dev/cu.usbmodem1301', 9600)
     print(dataTemp)
+
 
 
 # try:
@@ -118,7 +118,7 @@ def openHome():
 #
 @app.route("/data")
 def openSource():
-    data = ''
+    data = 0
     if (ser == None):
         return jsonify(0)
     else:
