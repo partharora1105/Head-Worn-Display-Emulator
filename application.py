@@ -3,8 +3,7 @@ from flask import Flask, jsonify, redirect, url_for, request, render_template, s
 import serial
 import time
 
-
-
+from serial.serialutil import SerialException
 
 app = Flask(__name__, static_folder="static")
 localDomain = "http://localhost:5000"
@@ -13,14 +12,35 @@ DOMAIN = localDomain
 localPath = ""
 publicPath = ""
 PATH = localPath
+dataTemp = 100
 
+# try:
+#     ser = serial.Serial('/dev/cu.usbmodem1301', 9600)  # Change this to the port your device is connected to
+#     ser.timeout = 5  # Set the timeout to 100ms
+# except SerialException:
+#     ser = None
+#     print("screwing up")
 
 try:
-    ser = serial.Serial('/dev/cu.usbmodem1301', 9600)  # Change this to the port your device is connected to
-    ser.timeout = 0.1  # Set the timeout to 100ms
-except:
-    print("No Port Found")
+    ser = serial.Serial('/dev/cu.usbmodem1301', 9600)
+    data = ser.readline().strip()
+    dataTemp = data
+    # process the data
+
+except serial.serialutil.SerialException:
     ser = None
+    print("SerialException occurred, resetting connection...")
+    ser.close()
+    ser = serial.Serial('/dev/cu.usbmodem1301', 9600)
+    print(dataTemp)
+
+
+# try:
+#     ser = serial.Serial('/dev/cu.usbmodem1301', 9600)  # Change this to the port your device is connected to
+#     ser.timeout = 0.1  # Set the timeout to 100ms
+# except:
+#     print("No Port Found")
+#     ser = None
 
 @app.route("/")
 def openHome():
@@ -99,10 +119,18 @@ def openHome():
 @app.route("/data")
 def openSource():
     data = ''
-    if ser.in_waiting > 0:
-        data = ser.readline().decode('utf-8').strip()
-    time.sleep(0.4)  # Wait for 400ms before reading again
-    return jsonify(data)
+    if (ser == None):
+        return jsonify(0)
+    else:
+        try:
+            data = ser.readline().decode('utf-8').strip()
+        except:
+            data = 0
+        # if ser.in_waiting > 0:
+        #     data = ser.readline().decode('utf-8').strip()
+        #     print(data)
+        time.sleep(0.1)  # Wait for 400ms before reading again
+        return jsonify(data)
 
 if __name__ == "__main__":
     app.debug = True

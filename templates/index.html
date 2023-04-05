@@ -48,30 +48,14 @@
 
     <!-- Optional JavaScript; choose one of the two! -->
       <script>
-        var threshold = 800;
-        setInterval(function() {
-            $.ajax({
-                url: "/data",
-                success: function(data) {
-                    console.log(data);
-                    if (parseInt(data) > threshold) {
-                      console.log("hide");
-                        document.getElementById("demoImg").style.visibility = "hidden";
-                    } else {
-                        document.getElementById("demoImg").style.visibility = "visible";
-                    }
-                }
-            });
-        }, 200);
-
-
+        
+        let threshold = 800;
         let h  = 905.512 //2173.2283465; //57.5cm 22.6378inch
         let w = 503.936 //1209.4488189; //32cm 12.5984inch
         //TV => 1 inch = 40px
         let iphone6H = 521.95275591
         let fSize = 20
-        
-        var isHidden = false;
+        // var isHidden = false;
         currPage = 0;
         times = [];
         let startTime = Date.now();
@@ -83,8 +67,27 @@
         // const intervalID = setInterval(checkArduino, 500, "Parameter 1", "Parameter 2");
         setDimesnions();
         setPages()
+
+
+
+        setInterval(function() {
+            $.ajax({
+                url: "/data",
+                success: function(data) {
+                    console.log(data);
+                    if (parseInt(data) > threshold ) {
+                      console.log("hide");
+                      document.getElementById("demoImg").style.visibility = "hidden";
+                        // isHidden == true;
+                    } else {
+                        console.log("show");
+                        document.getElementById("demoImg").style.visibility = "visible";
+                        // isHidden = false;
+                    }
+                }
+            });
+        }, 200);
         
-        // console.log("Total Sentences : " + {{sen}})
 
         function setDimesnions(){
           document.getElementById("demoImg").style.height = (h).toString() + "px" ;
