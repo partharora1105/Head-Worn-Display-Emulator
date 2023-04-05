@@ -46,3 +46,13 @@ body{
 .modified-iframe {
     font-size: 90px!important;
 }
+
+#mouse {
+    visibility: hidden;
+    position: absolute;
+    width: 200px;
+    top: 50vh;
+    right: calc(50vw - 100px);
+    text-anchor: middle;
+    font-size: 30px!important;
+}
