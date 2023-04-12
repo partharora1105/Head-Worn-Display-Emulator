@@ -40,7 +40,7 @@
     id="main"
     oncontextmenu="return false;"
   >
-    <div class="container-fluid bg">
+    <div class="container-fluid bg" id="bg">
       <div class="row canvas-holder">
         <div class="col-md-11 position-relative">
           <div class="demoImg row position-absolute" id="demoImg">
@@ -74,7 +74,6 @@
 
     <!-- Optional JavaScript; choose one of the two! -->
     <script>
-
       let threshold = 800;
       spaceBardHold = false;
       let h  = 905.512 //2173.2283465; //57.5cm 22.6378inch
@@ -100,6 +99,7 @@
       let overrideStatus = 0b00;
       let isHidden = false;
       let detectMouse = false;
+      document.getElementById("main").style.cursor = 'none';
       setInterval(function() {
           $.ajax({
               url: "/data",
@@ -203,11 +203,18 @@
                 document.getElementById("demoImg").style.visibility = "visible";
                 document.getElementById("pages").style.visibility = "visible";
                 document.getElementById("counter").style.visibility = "visible";
+                document.getElementById("main").style.cursor = 'none';
+                document.getElementById("bg").style.backgroundColor = 'black';
+                document.getElementById("bg").style.color = 'white';
+        
               } else {
                 document.getElementById("mouse").style.visibility = "visible";
                 document.getElementById("demoImg").style.visibility = "hidden";
                 document.getElementById("pages").style.visibility = "hidden";
                 document.getElementById("counter").style.visibility = "hidden";
+                document.getElementById("main").style.cursor = 'auto';
+                document.getElementById("bg").style.backgroundColor = 'white';
+                document.getElementById("bg").style.color = 'black';
               }
 
               break;

@@ -12,6 +12,7 @@ DOMAIN = localDomain
 localPath = ""
 publicPath = ""
 PATH = localPath
+arduino = '/dev/cu.usbmodem1201'
 
 # try:
 #     ser = serial.Serial('/dev/cu.usbmodem1301', 9600)  # Change this to the port your device is connected to
@@ -23,13 +24,13 @@ PATH = localPath
 initialized = False
 while not initialized:
     try:
-        ser = serial.Serial('/dev/cu.usbmodem1301', 9600)
+        ser = serial.Serial(arduino, 9600)
         initialized = True
         # process the data
 
     except serial.serialutil.SerialException:
         print("SerialException occurred, resetting connection...")
-        ser = serial.Serial('/dev/cu.usbmodem1301', 9600)
+        ser = serial.Serial(arduino, 9600)
 
 
 
@@ -139,7 +140,7 @@ def reinitialize():
     reinitialized = False
     while not reinitialized:
         try:
-            newser = serial.Serial('/dev/cu.usbmodem1301', 9600)
+            newser = serial.Serial(arduino, 9600)
             ser = newser
             reinitialized = True
             # process the data
