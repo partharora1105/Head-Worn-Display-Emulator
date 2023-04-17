@@ -99,7 +99,7 @@
       let overrideStatus = 0b00;
       let isHidden = false;
       let detectMouse = false;
-      document.getElementById("main").style.cursor = 'none';
+                                                    
       setInterval(function() {
           $.ajax({
               url: "/data",
@@ -266,7 +266,7 @@
         totalSentences = totalSent(currPage, times)
         data += "==========DATA=========\n"
         data += "Experiment Time : " + totalTime/1000 + " seconds\n"
-        data += "Experiment Pages : " + currPage + "\n"
+        data += "Experiment Pages : " + calculatePages(times) + "\n"
         data += "-----------------------\n"
         data += "Head Position Accuracy : " + ((totalTime - laserTime)/totalTime)*100 + "%\n"
         data += "Total Time : " + totalTime/1000 + " seconds\n"
@@ -335,6 +335,19 @@
           // console.log(times[currPage])
           times[currPage] += elapsedTime
         }
+      }
+
+      function calculatePages(numbers) {
+        if (numbers.length === 0) {
+          return 0;
+        }
+        let len = 0;
+        for (let i = 0; i < numbers.length; i++) {
+          if (typeof numbers[i] !== 'undefined' && numbers[i] > 1000) {
+            len++;
+          }
+        }
+        return len;
       }
 
       function calculateAverage(numbers) {
