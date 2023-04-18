@@ -2,6 +2,7 @@ import textwrap
 from flask import Flask, jsonify, redirect, url_for, request, render_template, send_from_directory
 import serial
 import time
+import threading
 
 from serial.serialutil import SerialException
 
@@ -133,11 +134,19 @@ def openSource():
         return jsonify(dataCached)
 
 
-
+reinitializing = False
+initialize_lock = threading.Lock()
 def reinitialize():
     print("Some Error!")
     global ser
+    global reinitializing
     reinitialized = False
+    initialize_lock.acquire()
+    if reinitializing:
+        initialize_lock.release()
+        return
+    reinitializing = True
+    initialize_lock.release()
     while not reinitialized:
         try:
             newser = serial.Serial(arduino, 9600)
@@ -146,6 +155,9 @@ def reinitialize():
             # process the data
         except serial.serialutil.SerialException:
             print("SerialException occurred, resetting connection...")
+    initialize_lock.acquire()
+    reinitializing = False
+    initialize_lock.release()
     # if ser.in_waiting > 0:
     #     data = ser.readline().decode('utf-8').strip()
     #     print(data)
