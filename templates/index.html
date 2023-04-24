@@ -66,6 +66,9 @@
             <div class="row" id="page">
               <button onclick="changePage(462)">Chapter 5</button>
             </div>
+            <div class="row" id="page">
+              <button onclick="changePage(560)">Chapter 6</button>
+            </div>
           </div>
         </div>
         <div class="col-md-1" id="mouse"></div>
@@ -368,7 +371,12 @@
 
       function totalSent(page, times) {
         let arr = {{senCount}}
-        // console.log(arr)
+        // let s = 0
+        // for(i = 462; i < 560; i++) {
+        //   s += arr[i]
+        // }
+        // console.log("pagessssss = " + s)
+
         sum = 0
         for(i = 0; i < page + 1; i++) {
           if (typeof times[i] !== 'undefined') {

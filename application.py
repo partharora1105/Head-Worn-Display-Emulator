@@ -12,7 +12,7 @@ DOMAIN = localDomain
 localPath = ""
 publicPath = ""
 PATH = localPath
-arduino = '/dev/cu.usbmodem1201'
+arduino = '/dev/cu.usbmodem1401'
 
 # try:
 #     ser = serial.Serial('/dev/cu.usbmodem1301', 9600)  # Change this to the port your device is connected to
