@@ -21,7 +21,7 @@ arduino = '/dev/cu.usbmodem1401'
 #     ser = None
 #     print("screwing up")
 
-initialized = False
+initialized = True
 while not initialized:
     try:
         ser = serial.Serial(arduino, 9600)
@@ -121,6 +121,7 @@ dataCached = 0
 def openSource():
     global dataCached
     global ser
+    return jsonify(500)
     try:
         data = ser.readline().decode().strip()
         if (not data.isdigit()) or int(data) > 999 or int(data) < 100:

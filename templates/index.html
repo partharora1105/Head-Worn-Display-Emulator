@@ -102,7 +102,7 @@
       let overrideStatus = 0b00;
       let isHidden = false;
       let detectMouse = false;
-                                                    
+
       setInterval(function() {
           $.ajax({
               url: "/data",
@@ -209,7 +209,7 @@
                 document.getElementById("main").style.cursor = 'none';
                 document.getElementById("bg").style.backgroundColor = 'black';
                 document.getElementById("bg").style.color = 'white';
-        
+
               } else {
                 document.getElementById("mouse").style.visibility = "visible";
                 document.getElementById("demoImg").style.visibility = "hidden";
@@ -309,7 +309,7 @@
 
 
       function next() {
-        if (currPage < {{len}}){
+        if (currPage < {{len}} - 1){
           saveTime();
           currPage++;
           startTime = Date.now();
@@ -378,8 +378,8 @@
         // console.log("pagessssss = " + s)
 
         sum = 0
-        for(i = 0; i < page + 1; i++) {
-          if (typeof times[i] !== 'undefined') {
+        for(i = 0; i < times.length; i++) {
+          if (typeof times[i] !== 'undefined' && times[i] > 1000) {
             sum += arr[i]
           }
         }
