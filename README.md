@@ -11,7 +11,7 @@ To effectively use the software for head-worn display (HWD) emulation, there are
 - Use a television to display the simulated HWD, placing it 2 meters away from the user. The current resolution should be set to that of an iPhone 12, although this may vary depending on the TV used.
 By following these steps, researchers can effectively use the software to simulate a HWD without the need for physical construction, allowing for more efficient and flexible testing and development.
 <p align="center">
-  <img src="/github-images/1.png">
+  <img src="/github-images/1.jpeg">
   <br>Complete Setup of Emulator
 </p>
 ## Setup
