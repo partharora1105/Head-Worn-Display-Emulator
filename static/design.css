@@ -7,8 +7,6 @@ body{
 .bg{
     color: white;
     background-color: black;
-    /* color: black;
-    background-color: white; */
     height: 100%;
 }
 .canvas-holder{
@@ -24,9 +22,6 @@ body{
     font-size: 30px;
 }
 .demoImg{
-    /* font-size : 34.69708 */
-    /*  */
-    /* (905.512  / 521.95275591) * 20 */
     font-family: 'Helvetica', 'Arial', sans-serif;
     line-height: 113%;
     padding: 40px;
@@ -34,8 +29,6 @@ body{
     white-space: pre-wrap;
     background: white;
     color:black;
-
-    /* overflow: scroll; */
 }
 
 .counter{

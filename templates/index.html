@@ -75,7 +75,7 @@
       </div>
     </div>
 
-    <!-- Optional JavaScript; choose one of the two! -->
+
     <script>
       let threshold = 800;
       spaceBardHold = false;
@@ -96,7 +96,7 @@
       document.onmousemove = calculateMouse;
       setInterval(visibilityCheck, 50);
       leftClick = 0
-      // const intervalID = setInterval(checkArduino, 500, "Parameter 1", "Parameter 2");
+
       setDimesnions();
       setPages()
       let overrideStatus = 0b00;
@@ -371,12 +371,6 @@
 
       function totalSent(page, times) {
         let arr = {{senCount}}
-        // let s = 0
-        // for(i = 462; i < 560; i++) {
-        //   s += arr[i]
-        // }
-        // console.log("pagessssss = " + s)
-
         sum = 0
         for(i = 0; i < times.length; i++) {
           if (typeof times[i] !== 'undefined' && times[i] > 1000) {
