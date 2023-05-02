@@ -10,10 +10,18 @@ To effectively use the software for head-worn display (HWD) emulation, there are
 - Place the Arduino sensor 1.75 meters away from the user's eye radially, with an error margin of 0.8 degrees.
 - Use a television to display the simulated HWD, placing it 2 meters away from the user. The current resolution should be set to that of an iPhone 12, although this may vary depending on the TV used.
 By following these steps, researchers can effectively use the software to simulate a HWD without the need for physical construction, allowing for more efficient and flexible testing and development.
-<p align="center">
-  <img src="/github-images/1.jpeg">
-  <br>Complete Setup of Emulator
-</p>
+
+## File Stucture
+- application.py: This file contains the Python Flask application code used for head-worn display emulation.
+- static: This folder contains static files such as CSS and JavaScript used in the Flask application.
+- templates: This folder contains the HTML templates used in the Flask application.
+- arduino_code: This folder contains the Arduino code used for photoresistor and laser calibration.
+- venv: This folder contains the Python virtual environment used for the Flask application.
+- kinect_code: This folder contains the Microsoft Kinect code used for initial calibration.
+- book.txt: This file contains the text used for the "Left Arrow" control in the software.
+- github-images: This folder contains images used in the README.md file.
+- README.md: This file provides information about the head-worn display emulator software, including usage instructions, setup instructions, controls, and the file structure of the parent directory.
+
 ## Setup
 ### Microsoft Kinect setup instructions:
 
@@ -61,4 +69,9 @@ Additionally, there are commands for overriding the Arduino:
 
 ## Conclusion
 In conclusion, the Head Worn Display Emulator software provides a convenient solution for researchers who require head-worn display emulation without the need for physical construction. The software allows for the modification of various parameters with just a single line of code, enabling efficient and flexible testing and development. The setup instructions for the Microsoft Kinect, Arduino, and Python Flask application are provided, and the controls for the software are explained. By following the instructions provided, users can effectively set up and use the software for head-worn display emulation, providing a valuable tool for research projects.
+
+<p align="center">
+  <img src="/github-images/1.jpeg">
+  <br>Complete Setup of Emulator
+</p>
 
