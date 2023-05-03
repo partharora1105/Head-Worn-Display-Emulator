@@ -21,6 +21,7 @@ By following these steps, researchers can effectively use the software to simula
 - book.txt: This file contains the text used for the "Left Arrow" control in the software.
 - github-images: This folder contains images used in the README.md file.
 - README.md: This file provides information about the head-worn display emulator software, including usage instructions, setup instructions, controls, and the file structure of the parent directory.
+- LICENSE: This file contains the license information for the head-worn display emulator software.
 
 ## Setup
 ### Microsoft Kinect setup instructions:
