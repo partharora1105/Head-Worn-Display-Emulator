@@ -67,8 +67,16 @@ Additionally, there are commands for overriding the Arduino:
 - Spacebar: Shows the display.
 - Spacebar + Enter: Hides the display.
 
+## License
+This project is released under the MIT License. See the LICENSE file for details.
+
+## Credits
+This project was created by Parth Arora, Yukun Song for Contextual Computing Lab at Georgia Tech.
+
 ## Conclusion
 In conclusion, the Head Worn Display Emulator software provides a convenient solution for researchers who require head-worn display emulation without the need for physical construction. The software allows for the modification of various parameters with just a single line of code, enabling efficient and flexible testing and development. The setup instructions for the Microsoft Kinect, Arduino, and Python Flask application are provided, and the controls for the software are explained. By following the instructions provided, users can effectively set up and use the software for head-worn display emulation, providing a valuable tool for research projects.
+
+
 
 <p align="center">
   <img src="/github-images/1.jpeg">
