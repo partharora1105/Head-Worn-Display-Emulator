@@ -108,7 +108,7 @@
               url: "/data",
               success: function(data) {
                   console.log(data);
-                  if (parseInt(data) > threshold) {
+                  if (parseInt(data) == 1) {
                     if (overrideStatus !== 0b01 && !isHidden) {
                       console.log("--hide--");
                       isHidden = true;

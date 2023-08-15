@@ -2,11 +2,10 @@ import textwrap
 from flask import Flask, jsonify, redirect, url_for, request, render_template, send_from_directory
 import serial
 import time
-
 from serial.serialutil import SerialException
 
 # ARDUINO PORT
-arduino = '/dev/cu.usbmodem1201'
+arduino = '/dev/cu.usbmodem1301'
 
 app = Flask(__name__, static_folder="static")
 localDomain = "http://localhost:5000"
@@ -62,36 +61,56 @@ def openHome():
 
 
 dataCached = 0
+issueDetected = False
+
 
 
 @app.route("/data")
 def openSource():
+    threshold = 700
     global dataCached
     global ser
-    try:
-        data = ser.readline().decode().strip()
-        if (not data.isdigit()) or int(data) > 999 or int(data) < 100:
+    global issueDetected
+    if not issueDetected:
+        try:
+            data = ser.readline().decode().strip()
+            if (not data.isdigit()) or int(data) > 999 or int(data) < 100:
+                issueDetected = True
+                print("ERROR : Invalid Data Type")
+                reinitialize()
+                return jsonify(0)
+            if int(data) > threshold:
+                return jsonify(1) # Hide it
+            return jsonify(0)
+        except (SerialException, UnicodeDecodeError) as e:
+            issueDetected = True
+            print("ERROR : Serial Exception")
             reinitialize()
-            return jsonify(dataCached)
-        dataCached = data
-        return jsonify(data)
-    except (SerialException, UnicodeDecodeError) as e:
-        reinitialize()
-        return jsonify(dataCached)
+            return jsonify(0)
+    else:
+        print("Resolving Error")
+        return jsonify(0)
 
 
 def reinitialize():
-    print("Some Error!")
+    global issueDetected
+    time.sleep(1)
     global ser
     reinitialized = False
     while not reinitialized:
         try:
             newser = serial.Serial(arduino, 9600)
             ser = newser
+            time.sleep(1)
+            data = ser.readline().decode().strip()
+            if (not data.isdigit()) or int(data) > 999 or int(data) < 100:
+                print(data)
+                continue
             reinitialized = True
-            # process the data
+            issueDetected = False
         except serial.serialutil.SerialException:
-            print("SerialException occurred, resetting connection...")
+            print("SerialException occurred while resetting, resetting connection...")
+            time.sleep(2)
 
 
 if __name__ == "__main__":
