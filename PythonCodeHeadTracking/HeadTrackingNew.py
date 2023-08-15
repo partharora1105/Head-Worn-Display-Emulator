@@ -1,0 +1,123 @@
+import cv2
+import dlib
+import numpy as np
+import pyautogui 
+from collections import deque
+
+# Load face detector and predictor, uses dlib shape predictor to detect landmark points.
+detector = dlib.get_frontal_face_detector()
+predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
+
+function_active = False
+
+# Assuming the camera is connected and placed in the right position.
+cap = cv2.VideoCapture(0)
+
+# Facial landmarks to match 3D model.
+model_points = np.array([
+                            (0.0, 0.0, 0.0),             # Nose tip
+                            (0.0, -330.0, -65.0),        # Chin
+                            (-225.0, 170.0, -135.0),     # Left eye left corner
+                            (225.0, 170.0, -135.0),      # Right eye right corner
+                            (-150.0, -150.0, -125.0),    # Left Mouth corner
+                            (150.0, -150.0, -125.0)      # Right mouth corner
+                        ])
+
+# test the capture fps and use it to average for a second
+Capture_Fps = cap.get(cv2.CAP_PROP_FPS)
+print(f"The video capture framerate is: {Capture_Fps} FPS")
+fps = 30
+
+# Using deque to store last 'fps' frames' roll and yaw values.
+roll_values = deque(maxlen=fps)
+yaw_values = deque(maxlen=fps)
+
+# Initialize average roll and yaw values and frame counter
+avg_roll, avg_yaw = 0, 0
+frame_counter = 0
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    rects = detector(gray, 0)
+
+    for rect in rects:
+        shape = predictor(gray, rect)
+        shape = np.array([(shape.part(i).x, shape.part(i).y) for i in range(shape.num_parts)])
+
+        # 2D image points to match with 3D model.
+        image_points = np.array([
+                                (shape[30, :]),     # Nose tip
+                                (shape[8,  :]),     # Chin
+                                (shape[36, :]),     # Left eye left corner
+                                (shape[45, :]),     # Right eye right corner
+                                (shape[48, :]),     # Left Mouth corner
+                                (shape[54, :])      # Right mouth corner
+                            ], dtype="double")
+
+        size = frame.shape
+        focal_length = size[1]
+        center = (size[1]/2, size[0]/2)
+        camera_matrix = np.array(
+                             [[focal_length, 0, center[0]],
+                             [0, focal_length, center[1]],
+                             [0, 0, 1]], dtype = "double"
+                             )
+
+        dist_coeffs = np.zeros((4,1)) # Assuming no lens distortion
+        (success, rotation_vector, translation_vector) = cv2.solvePnP(model_points, image_points, camera_matrix, dist_coeffs, flags=cv2.SOLVEPNP_ITERATIVE)
+
+        # Now we convert the rotation vector to Euler angles (roll, pitch, yaw)
+        rotation_matrix, _ = cv2.Rodrigues(rotation_vector)
+        pose_mat = cv2.hconcat((rotation_matrix, translation_vector))
+        _, _, _, _, _, _, euler_angle = cv2.decomposeProjectionMatrix(pose_mat)
+
+        pitch, yaw, roll = [angle[0] for angle in euler_angle]
+
+        # Draw a rectangle around the face
+        (x, y, w, h) = (rect.left(), rect.top(), rect.width(), rect.height())
+        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+       
+        if pitch > 1:
+            pitch = abs(pitch - 180)
+
+        else:
+            pitch = - abs(pitch+180)         
+        
+        roll = -roll
+
+        # Add the current roll and yaw values to the deques
+        roll_values.append(roll)
+        yaw_values.append(yaw)
+
+        # Increase the frame counter
+        frame_counter += 1
+
+        # If one second has passed, compute average roll and yaw values and reset the counter
+        if frame_counter >= fps:
+            avg_roll = sum(roll_values) / len(roll_values)
+            avg_yaw = sum(yaw_values) / len(yaw_values)
+            frame_counter = 0
+
+        # Put the averaged roll and yaw values on the frame
+
+        
+        # Replace the avg_roll and avg_yaw to roll and yaw if time averaged values are not needed
+        cv2.putText(frame, f'Avg Roll: {avg_roll:.2f}', (x, y - 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        cv2.putText(frame, f'Avg Yaw: {avg_yaw:.2f}', (x, y - 45), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+    # Display the resulting frame
+    cv2.imshow('Frame', frame)
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    print(f"The video capture framerate is: {fps} FPS")
+
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
