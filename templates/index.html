@@ -69,6 +69,28 @@
             <div class="row" id="page">
               <button onclick="changePage(560)">Chapter 6</button>
             </div>
+            <div class="row" id="page">
+              <button onclick="changePage(683)">Chapter 7</button>
+            </div>
+            <div class="row" id="page">
+              <button onclick="changePage(789)">Chapter 8</button>
+            </div>
+            <div class="row" id="page">
+              <button onclick="changePage(921)">Chapter 9</button>
+            </div>
+            <div class="row" id="page">
+              <button onclick="changePage(1033)">Chapter 10</button>
+            </div>
+            <div class="row" id="page">
+              <button onclick="changePage(1143)">Chapter 11</button>
+            </div>  
+            <div class="row" id="page">
+              <button onclick="changePage(1448)">Chapter 12</button>
+            </div>   
+            
+            <div class="row" id="page">
+              <audio controls id="audioElement" src="{{url_for('static', filename = 'question.mp3')}}" preload="auto"></audio>       
+            </div>
           </div>
         </div>
         <div class="col-md-1" id="mouse"></div>
@@ -99,9 +121,14 @@
 
       setDimesnions();
       setPages()
+      playAudio();
       let overrideStatus = 0b00;
       let isHidden = false;
       let detectMouse = false;
+      setTimeout(playAudio, 10000);
+      setTimeout(playAudio, 20000);
+      setInterval(playAudio, 300000);
+      
 
       setInterval(function() {
           $.ajax({
@@ -170,6 +197,11 @@
           }
           laserTime += Date.now() - laserStartTime;
         }
+      }
+
+      function playAudio() {
+        const audio = document.getElementById('audioElement');
+        audio.play();
       }
 
       function onKeyDown(event)

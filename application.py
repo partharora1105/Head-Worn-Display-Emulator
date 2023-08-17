@@ -21,7 +21,6 @@ while not initialized:
         ser = serial.Serial(arduino, 9600)
         initialized = True
         # process the data
-
     except serial.serialutil.SerialException:
         print("SerialException occurred, resetting connection...")
         ser = serial.Serial(arduino, 9600)
@@ -52,10 +51,14 @@ def openHome():
 
     chapters = output.split("*********")
     arr = []
+    pageNums = [0]
     for chapter in chapters:
         arr += textwrap.wrap(chapter, width=462)
-        print(str(len(textwrap.wrap(chapter, width=462))))
+        pageNums.append(int(len(textwrap.wrap(chapter, width=462))))
+    for i in range(1,len(pageNums)):
+        pageNums[i] = pageNums[i-1] + pageNums[i]
 
+    print(pageNums)
     return render_template("index.html", domain=DOMAIN, data=str(0), txt=arr, len=len(arr), sen=sentences,
                            senCount=sentencesCount)
 
