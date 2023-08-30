@@ -5,7 +5,7 @@ import time
 from serial.serialutil import SerialException
 
 # ARDUINO PORT
-arduino = '/dev/cu.usbmodem1301'
+arduino = '/dev/cu.usbmodem1201'
 
 app = Flask(__name__, static_folder="static")
 localDomain = "http://localhost:5000"
@@ -32,6 +32,9 @@ def openHome():
     with open('book.txt') as f:
         txt = f.read()
 
+
+
+
     lines = textwrap.wrap(txt, width=23)
     output = ""
     for i in range(0, len(lines), 23):
@@ -55,10 +58,11 @@ def openHome():
     for chapter in chapters:
         arr += textwrap.wrap(chapter, width=462)
         pageNums.append(int(len(textwrap.wrap(chapter, width=462))))
+    print(f"Chapter Lengths : {pageNums}")
     for i in range(1,len(pageNums)):
         pageNums[i] = pageNums[i-1] + pageNums[i]
 
-    print(pageNums)
+    print(f"Chapter Pg Nums : {pageNums}")
     return render_template("index.html", domain=DOMAIN, data=str(0), txt=arr, len=len(arr), sen=sentences,
                            senCount=sentencesCount)
 
@@ -70,7 +74,7 @@ issueDetected = False
 
 @app.route("/data")
 def openSource():
-    threshold = 700
+    threshold = 800
     global dataCached
     global ser
     global issueDetected
